@@ -1,5 +1,6 @@
 # zefix-parser
 
+[![PyPI](https://img.shields.io/pypi/v/zefix-parser)](https://pypi.org/project/zefix-parser/)
 [![Documentation](https://readthedocs.org/projects/zefix-parser/badge/?version=latest)](https://zefix-parser.readthedocs.io/en/latest/)
 
 Typed Python client for Zefix, the Swiss Central Business Name Index (Zentraler Firmenindex).
