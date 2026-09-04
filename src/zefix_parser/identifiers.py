@@ -24,8 +24,8 @@ UID_WEIGHTS = (5, 4, 3, 2, 7, 6, 5, 4)
 def normalize_uid(uid: str) -> str:
     """*uid* with punctuation removed and uppercased: ``"CHE123456789"``.
 
-    Does not validate. Use this as an index key, and :func:`is_valid_uid` to
-    decide whether the value is a real UID.
+    Use this as an index key, and :func:`is_valid_uid` to decide whether the
+    value is a real UID.
     """
     return _NON_ALPHANUMERIC.sub("", uid or "").upper()
 
@@ -33,9 +33,9 @@ def normalize_uid(uid: str) -> str:
 def format_uid(uid: str) -> str:
     """*uid* in the punctuated form ``"CHE-123.456.789"``.
 
-    This is the form the PublicREST API expects in its path; passing the
-    unpunctuated form returns 404. Values that are not nine digits behind a
-    ``CHE`` prefix are returned normalized but unchanged.
+    This is the form the PublicREST API expects in its path; the unpunctuated
+    form returns 404. Anything other than nine digits behind a ``CHE`` prefix
+    comes back normalized and otherwise untouched.
     """
     normalized = normalize_uid(uid)
     match = _UID.match(normalized)
@@ -59,7 +59,7 @@ def is_valid_uid(uid: str) -> bool:
 
     A mistyped UID can never match the register, so it is worth rejecting
     before you spend a request on it. Placeholders such as ``CHE123456789``
-    fail this check, which is usually what you want.
+    fail this check.
     """
     normalized = normalize_uid(uid)
     if not _UID.match(normalized):
@@ -87,8 +87,8 @@ def format_chid(chid: str) -> str:
     """*chid* in the punctuated form ``"CH-123.4.567.890-1"``.
 
     The CHID is the older cantonal register number that Zefix still returns
-    alongside the UID. Values that are not eleven digits behind a ``CH``
-    prefix are returned normalized but unchanged.
+    alongside the UID. Anything other than eleven digits behind a ``CH``
+    prefix comes back normalized and otherwise untouched.
     """
     normalized = normalize_chid(chid)
     match = _CHID.match(normalized)

@@ -23,8 +23,8 @@ _PUNCTUATION = re.compile(r"[^\w\s]", re.UNICODE)
 def parse_company(data: dict | list) -> Company:
     """Parse one ``/company/...`` response into a :class:`~zefix_parser.Company`.
 
-    The API is inconsistent about whether a single company comes back as an
-    object or as a one-element list, so both are accepted.
+    The API returns a single company as an object from some endpoints and as
+    a one-element list from others. Both are accepted.
 
     Raises:
         ParserError: if *data* is neither of those shapes.
@@ -89,10 +89,10 @@ def meaningful_old_names(company: Company) -> list[OldName]:
     """The entries of ``company.old_names`` that are real former names.
 
     The register re-typesets a name whenever anything else about the company
-    changes, so ``oldNames`` is full of entries that differ from the current
-    name only in casing, punctuation or spacing -- "QualiCasa AG" against
-    "Qualicasa AG". Treating those as former names retires the live one. This
-    drops them, along with duplicates, and returns what is left oldest first.
+    changes, so ``oldNames`` fills up with entries that differ from the current
+    name only in casing, punctuation or spacing: "QualiCasa AG" against
+    "Qualicasa AG". Apply those and you retire the company's live name. This
+    drops them, along with duplicates, and returns the rest oldest first.
     """
     current = normalize_name(company.name)
     seen: set[str] = set()

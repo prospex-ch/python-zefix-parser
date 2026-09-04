@@ -14,8 +14,8 @@ To use the HTTP clients, for fetching from the live endpoints:
 
    pip install zefix-parser[http]
 
-The parsers themselves have no dependencies at all, so you can install the
-package without the extra and point them at responses you fetched yourself.
+The parsers themselves have no dependencies at all, so you can install the bare
+package and point them at responses you fetched yourself.
 
 Read the register from LINDAS
 -----------------------------
@@ -27,7 +27,7 @@ No credentials needed.
    from zefix_parser.client import LindasClient
 
    with LindasClient() as client:
-       print(client.count())  # 800000-ish
+       print(client.count())  # 812,000 or so
 
        for entity in client.iter_entities():
            print(entity.legal_name, entity.uid, entity.canton, entity.legal_form_code)
@@ -67,8 +67,7 @@ by ``zefix@bj.admin.ch``.
        print(auditor.name, auditor.legal_seat)
 
 Both clients rate-limit themselves to one request every half second and retry
-transient failures with exponential backoff. Neither is thread-safe: give each
-thread its own client.
+transient failures with exponential backoff. Give each thread its own client.
 
 Parse responses you already have
 --------------------------------
@@ -102,15 +101,16 @@ register, and the register's own placeholder ``CHE123456789`` fails it.
 Background
 ----------
 
-Zefix -- the Zentraler Firmenindex, *index central des raisons de commerce*,
-*indice centrale delle ditte*, officially the Swiss Central Business Name Index
--- is the federal index over the 26 cantonal commercial registers
-(Handelsregister, registre du commerce, registro di commercio). Every company
+Zefix (the Zentraler Firmenindex, *index central des raisons de commerce*,
+*indice centrale delle ditte*, officially the Swiss Central Business Name Index)
+is the federal index over the 26 cantonal commercial registers:
+Handelsregister, registre du commerce, registro di commercio. Every company
 registered in Switzerland appears in it, identified by a UID
 (``CHE-123.456.789``), a CHID and an EHRAID.
 
-The Federal Office of Justice publishes the index twice: as a linked-data
-dataset on LINDAS, which is open and complete but state-only, and as the
-PublicREST API, which is richer but needs credentials and answers one company at
-a time. Neither publishes a change feed; for that you need the gazette, which is
-what `shab-parser <https://shab-parser.readthedocs.io>`_ reads.
+The Federal Office of Justice publishes the index twice. LINDAS carries every
+company as linked data, open to anyone, holding each company's current state.
+The PublicREST API holds more per company, behind credentials, and answers one
+lookup at a time. Neither publishes a change feed; for that you need the
+gazette, which is what `shab-parser <https://shab-parser.readthedocs.io>`_
+reads.

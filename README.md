@@ -33,7 +33,7 @@ No credentials needed.
 from zefix_parser.client import LindasClient
 
 with LindasClient() as client:
-    print(client.count())  # 800000-ish
+    print(client.count())  # 812,000 or so
 
     for entity in client.iter_entities():
         print(entity.legal_name, entity.uid, entity.canton, entity.legal_form_code)
@@ -189,9 +189,9 @@ The full table is in the [legal forms reference](https://zefix-parser.readthedoc
 ## Former names
 
 The register re-typesets a company's name whenever anything else about it changes, so
-`company.old_names` is full of entries that differ from the current name only in casing or
-spacing — "QualiCasa AG" against "Qualicasa AG". Treating those as former names retires
-the live one. `meaningful_old_names()` drops them:
+`company.old_names` fills up with entries that differ from the current name only in casing
+or spacing: "QualiCasa AG" against "Qualicasa AG". Apply them and you retire the company's
+live name. `meaningful_old_names()` drops them:
 
 ```python
 from zefix_parser import meaningful_old_names
@@ -215,8 +215,8 @@ comes back as an object or a one-element list; both work.
 
 ### `zefix_parser.build_combined_page_query(*, cursor_after=None, limit=500) -> str`
 
-Build the SPARQL query for one keyset page of full records. Use this if you want to run the
-crawl yourself rather than through `LindasClient`.
+Build the SPARQL query for one keyset page of full records. Use this to run the crawl
+yourself, outside `LindasClient`.
 
 ### `zefix_parser.client.LindasClient`
 
@@ -230,16 +230,16 @@ PublicREST client. `get_by_uid()`, `get_by_ehraid()`, `get_by_chid()`, `search()
 
 ## Background
 
-Zefix — the Zentraler Firmenindex, *index central des raisons de commerce*, *indice centrale
-delle ditte*, officially the Swiss Central Business Name Index — is the federal index over
-the 26 cantonal commercial registers (Handelsregister, registre du commerce, registro di
-commercio). Every company registered in Switzerland appears in it, identified by a UID
+Zefix (the Zentraler Firmenindex, *index central des raisons de commerce*, *indice centrale
+delle ditte*, officially the Swiss Central Business Name Index) is the federal index over
+the 26 cantonal commercial registers: Handelsregister, registre du commerce, registro di
+commercio. Every company registered in Switzerland appears in it, identified by a UID
 (`CHE-123.456.789`), a CHID and an EHRAID.
 
-The Federal Office of Justice publishes the index twice: as a linked-data dataset on LINDAS,
-which is open and complete but state-only, and as the PublicREST API, which is richer but
-needs credentials and answers one company at a time. Neither publishes a change feed; for
-that you need the gazette, which is what
+The Federal Office of Justice publishes the index twice. LINDAS carries every company as
+linked data, open to anyone, holding each company's current state. The PublicREST API holds
+more per company, behind credentials, and answers one lookup at a time. Neither publishes a
+change feed; for that you need the gazette, which is what
 [shab-parser](https://shab-parser.readthedocs.io) reads.
 
 ## License

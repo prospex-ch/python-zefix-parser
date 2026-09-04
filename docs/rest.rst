@@ -9,18 +9,17 @@ header you get a 401. Credentials are issued on request by ``zefix@bj.admin.ch``
 What it adds over LINDAS
 ------------------------
 
-The register's own detail record, which the linked-data dataset does not
-publish:
+The register's own detail record, which LINDAS keeps to itself:
 
-* ``capital_nominal`` and ``capital_currency`` -- the share capital
-* ``status`` -- ``ACTIVE``, ``IN_LIQUIDATION`` or ``DELETED``, and
+* ``capital_nominal`` and ``capital_currency``: the share capital
+* ``status``: ``ACTIVE``, ``IN_LIQUIDATION`` or ``DELETED``, plus
   ``deletion_date`` where it applies
-* ``audit_companies`` -- the statutory auditor
-* ``head_offices``, ``further_head_offices``, ``branch_offices`` -- the
-  head-office/branch tree
-* ``has_taken_over``, ``was_taken_over_by`` -- mergers, from both sides
-* ``old_names`` -- every name the company has carried
-* ``cantonal_excerpt_web`` -- a link to the cantonal register's own excerpt
+* ``audit_companies``: the statutory auditor
+* ``head_offices``, ``further_head_offices``, ``branch_offices``: the
+  head-office and branch tree
+* ``has_taken_over``, ``was_taken_over_by``: mergers, from both sides
+* ``old_names``: every name the company has carried
+* ``cantonal_excerpt_web``: a link to the cantonal register's own excerpt
 
 Endpoints
 ---------
@@ -44,8 +43,8 @@ Endpoints
    * - :meth:`~zefix_parser.client.ZefixRestClient.sogc`
      - ``GET /sogc/{id}``
 
-A lookup that finds nothing returns ``None`` rather than raising: the register
-answers 404 for a UID it does not know, which is information, not an error.
+A lookup that finds nothing returns ``None``. The register answers 404 for a UID
+it has no record of, so treat that as an answer and carry on.
 
 The UID has to be punctuated
 ----------------------------
@@ -60,23 +59,23 @@ are driving the API by hand.
 Search is a prefix match
 ------------------------
 
-``/company/search`` matches on the start of the name, not on words inside it,
-and it caps how much it returns. There is no cursor and no total, so paging
-deeper is not an option: widen or shorten the prefix instead.
+``/company/search`` matches the start of the name and caps how much it returns.
+There is no cursor and no total, so shorten the prefix when you need more
+results and lengthen it when you get too many.
 
-Former names are mostly not renames
------------------------------------
+Most former names are re-typesettings
+-------------------------------------
 
 The register re-typesets a company's name whenever anything else about it
 changes, so ``old_names`` fills up with entries that differ from the current
-name only in casing, punctuation or spacing -- "QualiCasa AG" against
-"Qualicasa AG". In one corpus of Swiss companies, 4,215 ``oldNames`` rows were
-of exactly this kind. Applying them naively retires the company's live name.
+name only in casing, punctuation or spacing: "QualiCasa AG" against
+"Qualicasa AG". In one corpus of Swiss companies, thousands of ``oldNames`` rows
+were of exactly this kind. Apply them and you retire the company's live name.
 
 :func:`~zefix_parser.meaningful_old_names` compares each entry against the
-current name under :func:`~zefix_parser.normalize_name` -- casefolded, stripped
-of punctuation and extra whitespace -- and returns only what is genuinely a
-former name, deduplicated, oldest first:
+current name under :func:`~zefix_parser.normalize_name` (casefolded, stripped of
+punctuation and extra whitespace) and returns the genuine former names,
+deduplicated, oldest first:
 
 .. code-block:: python
 
@@ -89,7 +88,6 @@ Rate limiting
 -------------
 
 :class:`~zefix_parser.client.ZefixRestClient` waits half a second between
-requests and retries 429 and 5xx responses with exponential backoff. If you need
-more throughput, run several clients in separate threads rather than lowering
-``min_interval`` on one: each client throttles itself independently, and one
-client is not thread-safe.
+requests and retries 429 and 5xx responses with exponential backoff. For more
+throughput, run several clients in separate threads. Each one throttles itself
+independently, and a single client is unsafe to share between threads.

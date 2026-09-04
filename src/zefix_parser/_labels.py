@@ -1,8 +1,7 @@
 """Shared text normalization for language-tagged register literals.
 
 Both LINDAS and the REST API return the same company under several language
-tags. These helpers pick one deterministically so a given input always parses
-to the same output.
+tags. These helpers pick one, always the same one for a given input.
 """
 
 from __future__ import annotations

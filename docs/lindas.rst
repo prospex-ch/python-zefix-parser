@@ -21,7 +21,7 @@ What the dataset carries
      - Language-tagged; the same company has one per official language
    * - ``alternate_names``
      - ``schema:name``
-     - Plus the legal-name variants that were not selected
+     - Plus the legal-name variants the parser set aside
    * - ``uid``
      - ``schema:identifier`` / ``CompanyUID``
      - Unpunctuated, ``CHE123456789``
@@ -42,7 +42,7 @@ What the dataset carries
      - Two letters
    * - ``street_address``, ``postal_code``, ``locality``
      - ``schema:address/...``
-     - Already structured; no address parsing needed
+     - Already structured, field by field
    * - ``purpose``
      - ``schema:description``
      - The registered purpose, language-tagged
@@ -53,24 +53,24 @@ Folding the language variants
 A single company spans several result rows, one per language-tagged literal.
 :func:`~zefix_parser.parse_entity_page` groups rows by entity URI and picks one
 value per field, preferring German, then French, Italian, English, and finally
-an untagged literal. The variants that lost are kept in ``alternate_names``, so
-nothing is thrown away; ``purpose_language`` records which language the purpose
-came out in.
+an untagged literal. The remaining variants go to ``alternate_names``, and
+``purpose_language`` records which language the purpose came out in.
 
-Where a field is multi-valued for reasons other than language -- two street
-addresses, two legal-form codes -- the lowest value sorted lexically wins. That
-is arbitrary, but it is *stable*, which is what matters when you are comparing
-two fetches of the same company.
+Where a field holds several values for reasons other than language (two street
+addresses, two legal-form codes), the lowest value sorted lexically wins. The
+same input always yields the same output, so two fetches of an unchanged company
+compare equal.
 
-Two entities are dropped: one with no legal name, and one with neither a UID nor
-an EHRAID. Neither can be matched to anything, and the register does emit a few.
+Two kinds of entity are dropped: those with no legal name, and those carrying
+neither a UID nor an EHRAID. The register emits a few of each, and there is
+nothing to match them against.
 
 Pagination
 ----------
 
 The dataset has no modification-date predicate, so there is no way to ask for
-what changed. You walk the whole register, and you do it by keyset over the
-entity URI rather than by ``OFFSET``, which the endpoint handles badly at depth:
+what changed. You walk the whole register, paginating by keyset over the entity
+URI. Deep ``OFFSET`` values time out on this endpoint:
 
 .. code-block:: python
 
@@ -84,8 +84,7 @@ entity URI rather than by ``OFFSET``, which the endpoint handles badly at depth:
 
 :meth:`~zefix_parser.client.LindasClient.iter_pages` does this for you and
 yields :class:`~zefix_parser.RawPage` objects carrying the cursor each page was
-fetched with, so a crawl interrupted after six hours can resume where it stopped
-rather than starting over.
+fetched with. A crawl interrupted after six hours resumes where it stopped.
 
 Skipping unchanged companies
 ----------------------------
@@ -93,15 +92,14 @@ Skipping unchanged companies
 Every :class:`~zefix_parser.RegistryEntity` carries a ``fingerprint``: a SHA-256
 over the fields that describe the company itself. Two fetches of an unchanged
 company produce the same value, so you can compare it against what you stored
-last time and skip the write. Identifiers that never change on their own
-(``chid``, ``ehra_id``) and ``alternate_names`` are excluded, so a cosmetic
-change to a name variant does not look like a mutation.
+last time and skip the write. The digest covers the descriptive fields only:
+``chid``, ``ehra_id`` and ``alternate_names`` sit outside it, so a cosmetic
+change to a name variant leaves the fingerprint alone.
 
 Detecting deregistrations
 -------------------------
 
-A deleted company simply stops appearing in the dataset -- there is no tombstone
-and no status field. The only way to notice is to compare a full crawl against
-the previous one. Because a single failed page can make a company look absent,
-require the same company to be missing from two or three consecutive crawls
-before you act on it.
+A deleted company stops appearing in the dataset. There is no tombstone and no
+status field, so the only way to notice is to compare a full crawl against the
+previous one. A single failed page can make a company look absent: require the
+same company to be missing from two consecutive crawls before you act on it.

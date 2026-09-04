@@ -1,10 +1,9 @@
 """The eCH-0097 legal-form codes Zefix and SHAB publish, with their names.
 
 Both Swiss registers identify a company's legal form by a four-digit eCH-0097
-code rather than by name, and the name itself differs per language: code
-``0106`` is an *Aktiengesellschaft*, a *Société anonyme* and a *Società
-anonima* depending on where the company is seated. This module is the lookup
-table.
+code. The name itself differs per language: code ``0106`` is an
+*Aktiengesellschaft*, a *Société anonyme* and a *Società anonima* depending on
+where the company is seated. This module is the lookup table.
 """
 
 from __future__ import annotations
@@ -151,8 +150,8 @@ def legal_form_name(code: str, lang: str = "de") -> str:
 def legal_form_abbreviation(code: str, lang: str = "de") -> str:
     """The usual abbreviation for *code* in *lang*, or ``""``.
 
-    Only the forms that companies actually carry in their name have one, so
-    a foundation or an association returns ``""``.
+    Only the forms a company carries in its name have one, so a foundation or
+    an association returns ``""``.
     """
     abbreviations = LEGAL_FORM_ABBREVIATIONS.get(str(code).strip())
     if not abbreviations:

@@ -6,8 +6,8 @@ are needed. Nothing in this module opens a network connection: build a query,
 send it however you like, hand the bytes back here.
 
 The dataset has no modification-date predicate, so a server-side delta fetch
-is impossible; the register is paginated by keyset over the entity URI
-instead of by offset, which is what :func:`build_combined_page_query` does.
+is impossible. Pagination runs by keyset over the entity URI, which is what
+:func:`build_combined_page_query` builds.
 """
 
 from __future__ import annotations
@@ -170,7 +170,7 @@ def build_detail_query(entity_uris: list[str]) -> str:
 def build_detail_query_by_uids(uids: list[str]) -> str:
     """A query for the full record of each UID in *uids*.
 
-    LINDAS stores UIDs unpunctuated, so the values are normalized for you:
+    LINDAS stores UIDs unpunctuated, so the values are normalized for you.
     ``"CHE-123.456.789"`` and ``"CHE123456789"`` both match.
     """
     values = " ".join(f'"{_escape_literal(normalize_uid(uid))}"' for uid in uids)
@@ -250,9 +250,9 @@ def parse_entity_page(content: bytes) -> list[RegistryEntity]:
     """The companies in a detail or combined-page response.
 
     One company spans several rows, one per language-tagged literal, so rows
-    are grouped by entity URI and folded down. Entities without a legal name,
-    or with neither a UID nor an EHRAID, are dropped: they cannot be matched
-    to anything and the register does emit a few.
+    are grouped by entity URI and folded down. Entities lacking a legal name,
+    or carrying neither a UID nor an EHRAID, are dropped: there is nothing to
+    match them against, and the register emits a few.
     """
     grouped: dict[str, list[dict]] = {}
     for row in parse_sparql_json(content):
@@ -415,9 +415,9 @@ def _group_entity(uri: str, rows: list[dict]) -> RegistryEntity | None:
 def compute_fingerprint(entity: RegistryEntity) -> str:
     """A stable digest of the fields that describe *entity* itself.
 
-    Two fetches of an unchanged company produce the same value and
-    you can skip the write. Identifiers that never change on their own
-    (``chid``, ``ehra_id``) and ``alternate_names`` are deliberately excluded.
+    Two fetches of an unchanged company produce the same value, so you can
+    skip the write. The digest covers the descriptive fields only: ``chid``,
+    ``ehra_id`` and ``alternate_names`` sit outside it.
     """
     identity = {
         "uri": entity.zefix_uri,

@@ -10,8 +10,7 @@ gated behind HTTP Basic auth; credentials are issued on request by
 ``zefix@bj.admin.ch``.
 
 Both clients rate-limit themselves and retry transient failures with
-exponential backoff. Neither of them is thread-safe: give each thread its own
-client.
+exponential backoff. Give each thread its own client.
 """
 
 from __future__ import annotations
@@ -189,9 +188,9 @@ class ZefixRestClient(_BaseClient):
     ) -> list[Company]:
         """Companies whose name starts with *name*.
 
-        The endpoint is a prefix match, not a full-text search, and it caps
-        how much it will return; there is no cursor, so widen the prefix
-        rather than paging deeper.
+        The endpoint matches the start of the name and caps how much it
+        returns. There is no cursor, so shorten the prefix when you need more
+        results.
         """
         payload = {
             "name": name,
@@ -286,8 +285,8 @@ class LindasClient(_BaseClient):
         """Walk the register one page at a time, yielding raw responses.
 
         Each :class:`~zefix_parser.RawPage` carries the cursor it was fetched
-        with, so you can persist it and resume an interrupted crawl by passing
-        it back as *cursor_after*.
+        with. Persist that value and pass it back as *cursor_after* to resume
+        an interrupted crawl.
         """
         for page, _entities in self._walk(cursor_after):
             yield page
@@ -342,8 +341,8 @@ class LindasClient(_BaseClient):
 def _page_uris(content: bytes) -> set[str]:
     """Every entity URI in a page, including entities the parser dropped.
 
-    The cursor has to advance past dropped entities too, or a page whose last
-    rows are all invalid loops forever.
+    The cursor advances past dropped entities too, so a page whose last rows
+    are all invalid still moves the crawl forward.
     """
     return set(parse_uri_page(content))
 

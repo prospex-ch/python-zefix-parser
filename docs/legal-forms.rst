@@ -2,10 +2,9 @@ Legal forms
 ===========
 
 Zefix and SHAB both identify a company's legal form by its four-digit eCH-0097
-code rather than by name, because the name depends on the language the company
-is registered in: code ``0106`` is an *Aktiengesellschaft* in Zurich, a
-*Société anonyme* in Geneva and a *Società anonima* in Ticino, and all three are
-the same thing.
+code. The name depends on the language the company is registered in: code
+``0106`` is an *Aktiengesellschaft* in Zurich, a *Société anonyme* in Geneva and
+a *Società anonima* in Ticino, all of them the same legal form.
 
 .. code-block:: python
 
@@ -126,8 +125,8 @@ The codes
 Abbreviations
 -------------
 
-Only the forms a company actually carries in its name have one; a foundation or
-an association returns ``""``.
+These are the forms a company carries in its name. Every other code returns
+``""``.
 
 .. list-table::
    :header-rows: 1
@@ -162,11 +161,11 @@ an association returns ``""``.
      - SICAV
      - SICAV
 
-Codes you will not see
-----------------------
+Codes outside the register
+--------------------------
 
-eCH-0097 reserves codes that the commercial register does not use, such as
-``0102`` (simple partnership, which is not registered) and ``0220`` and above
-(the public-law bodies that have their own registers). Zefix only ever emits the
-fifteen above, so a code outside them means either a data error upstream or a
-change to the standard.
+eCH-0097 reserves codes the commercial register leaves alone: ``0102`` covers
+the simple partnership, which stays unregistered, and ``0220`` and above cover
+public-law bodies that keep their own registers. Zefix emits the fifteen codes
+above and nothing else, so anything outside that set points to a data error
+upstream or a change to the standard.
