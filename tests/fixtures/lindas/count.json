@@ -1,0 +1,7 @@
+{
+  "results": {
+    "bindings": [
+      {"count": {"type": "typed-literal", "datatype": "http://www.w3.org/2001/XMLSchema#integer", "value": "5"}}
+    ]
+  }
+}

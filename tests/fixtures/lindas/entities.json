@@ -1,0 +1,74 @@
+{
+  "results": {
+    "bindings": [
+      {
+        "entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/1"},
+        "legalName": {"type": "literal", "value": "Müller & Söhne AG", "xml:lang": "de"},
+        "name": {"type": "literal", "value": "Müller et Fils SA", "xml:lang": "fr"},
+        "uid": {"type": "literal", "value": "CHE123456789"},
+        "chid": {"type": "literal", "value": "CH12345678901"},
+        "ehraId": {"type": "literal", "value": "100001"},
+        "legalFormUri": {"type": "uri", "value": "https://ld.admin.ch/ech/97/legalforms/0106"},
+        "legalFormLabel": {"type": "literal", "value": "Aktiengesellschaft", "xml:lang": "de"},
+        "municipalityUri": {"type": "uri", "value": "https://ld.admin.ch/municipality/261"},
+        "municipalityLabel": {"type": "literal", "value": "Zürich", "xml:lang": "de"},
+        "canton": {"type": "literal", "value": "ZH"},
+        "streetAddress": {"type": "literal", "value": "Bahnhofstrasse 10"},
+        "postalCode": {"type": "literal", "value": "8001"},
+        "locality": {"type": "literal", "value": "Zürich"},
+        "purpose": {"type": "literal", "value": "Handel mit Waren aller Art", "xml:lang": "de"}
+      },
+      {
+        "entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/1"},
+        "legalName": {"type": "literal", "value": "Müller et Fils SA", "xml:lang": "fr"},
+        "uid": {"type": "literal", "value": "CHE123456789"},
+        "legalFormUri": {"type": "uri", "value": "https://ld.admin.ch/ech/97/legalforms/0106"},
+        "legalFormLabel": {"type": "literal", "value": "Société anonyme", "xml:lang": "fr"},
+        "municipalityUri": {"type": "uri", "value": "https://ld.admin.ch/municipality/261"},
+        "municipalityLabel": {"type": "literal", "value": "Zurich", "xml:lang": "fr"},
+        "canton": {"type": "literal", "value": "ZH"}
+      },
+      {
+        "entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/2"},
+        "legalName": {"type": "literal", "value": "Boulangerie du Lac Sàrl", "xml:lang": "fr"},
+        "uid": {"type": "literal", "value": "CHE987654321"},
+        "ehraId": {"type": "literal", "value": "200002"},
+        "legalFormUri": {"type": "uri", "value": "https://ld.admin.ch/ech/97/legalforms/0107"},
+        "legalFormLabel": {"type": "literal", "value": "Société à responsabilité limitée", "xml:lang": "fr"},
+        "municipalityUri": {"type": "uri", "value": "https://ld.admin.ch/municipality/5586"},
+        "municipalityLabel": {"type": "literal", "value": "Genève", "xml:lang": "fr"},
+        "canton": {"type": "literal", "value": "GE"},
+        "streetAddress": {"type": "literal", "value": "Rue du Lac 5"},
+        "postalCode": {"type": "literal", "value": "1204"},
+        "locality": {"type": "literal", "value": "Genève"},
+        "purpose": {"type": "literal", "value": "Exploitation d'une boulangerie", "xml:lang": "fr"}
+      },
+      {
+        "entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/3"},
+        "legalName": {"type": "literal", "value": "Ticino Costruzioni SA", "xml:lang": "it"},
+        "uid": {"type": "literal", "value": "CHE111222333"},
+        "ehraId": {"type": "literal", "value": "300003"},
+        "legalFormUri": {"type": "uri", "value": "https://ld.admin.ch/ech/97/legalforms/0106"},
+        "legalFormLabel": {"type": "literal", "value": "Società anonima", "xml:lang": "it"},
+        "municipalityUri": {"type": "uri", "value": "https://ld.admin.ch/municipality/5192"},
+        "municipalityLabel": {"type": "literal", "value": "Lugano", "xml:lang": "it"},
+        "canton": {"type": "literal", "value": "TI"},
+        "locality": {"type": "literal", "value": "Lugano"}
+      },
+      {
+        "entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/4"},
+        "legalName": {"type": "literal", "value": "Genossenschaft Alpkäse", "xml:lang": "de"},
+        "ehraId": {"type": "literal", "value": "400004"},
+        "legalFormUri": {"type": "uri", "value": "https://ld.admin.ch/ech/97/legalforms/0108"},
+        "legalFormLabel": {"type": "literal", "value": "Genossenschaft", "xml:lang": "de"},
+        "municipalityUri": {"type": "uri", "value": "https://ld.admin.ch/municipality/3544"},
+        "municipalityLabel": {"type": "literal", "value": "Grindelwald", "xml:lang": "de"},
+        "canton": {"type": "literal", "value": "BE"}
+      },
+      {
+        "entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/5"},
+        "legalName": {"type": "literal", "value": "Invalid Entity"}
+      }
+    ]
+  }
+}

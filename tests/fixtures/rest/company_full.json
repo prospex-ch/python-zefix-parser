@@ -1,0 +1,51 @@
+{
+  "name": "Alpenblick Handel AG",
+  "ehraid": 1102345,
+  "uid": "CHE-105.215.703",
+  "chid": "CH02039262648",
+  "canton": "ZH",
+  "status": "ACTIVE",
+  "capitalNominal": "250000.00",
+  "capitalCurrency": "CHF",
+  "deletionDate": null,
+  "cantonalExcerptWeb": "https://zh.chregister.ch/cr-portal/auszug/auszug.xhtml?uid=CHE-105.215.703",
+  "legalSeat": "Zürich",
+  "headOffices": [],
+  "furtherHeadOffices": [],
+  "branchOffices": [
+    {
+      "name": "Alpenblick Handel AG, succursale de Lausanne",
+      "ehraid": 1198877,
+      "uid": "CHE-411.462.297",
+      "chid": "",
+      "legalSeat": "Lausanne",
+      "status": "ACTIVE"
+    }
+  ],
+  "hasTakenOver": [
+    {
+      "name": "Bergsicht Trading GmbH",
+      "ehraid": 1055512,
+      "uid": "CHE-197.712.435",
+      "chid": "",
+      "legalSeat": "Zug",
+      "status": "DELETED"
+    }
+  ],
+  "wasTakenOverBy": [],
+  "auditCompanies": [
+    {
+      "name": "Limmat Revisions AG",
+      "ehraid": 1077777,
+      "uid": "CHE-244.845.878",
+      "chid": "",
+      "legalSeat": "Zürich",
+      "status": "ACTIVE"
+    }
+  ],
+  "oldNames": [
+    {"name": "Alpenblick Import GmbH", "sequenceNr": 1},
+    {"name": "Alpenblick  Handel  AG", "sequenceNr": 2},
+    {"name": "ALPENBLICK HANDEL AG", "sequenceNr": 3}
+  ]
+}

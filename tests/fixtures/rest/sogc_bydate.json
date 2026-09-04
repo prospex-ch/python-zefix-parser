@@ -1,0 +1,23 @@
+[
+  {
+    "sogcId": 1234567,
+    "sogcDate": "2026-06-15",
+    "name": "Alpenblick Handel AG",
+    "uid": "CHE-105.215.703",
+    "ehraid": 1102345,
+    "canton": "ZH",
+    "mutationTypeId": 1,
+    "mutationTypeText": "Neueintragung",
+    "message": "Alpenblick Handel AG, in Zürich, CHE-105.215.703, Aktiengesellschaft."
+  },
+  {
+    "sogcId": 1234568,
+    "sogcDate": "2026-06-15",
+    "name": "Léman Services Sàrl",
+    "uid": "CHE-411.462.297",
+    "ehraid": 1204488,
+    "canton": "GE",
+    "mutationTypeId": 3,
+    "mutationTypeText": "Radiation"
+  }
+]

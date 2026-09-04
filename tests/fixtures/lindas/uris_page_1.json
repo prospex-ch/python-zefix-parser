@@ -1,0 +1,11 @@
+{
+  "results": {
+    "bindings": [
+      {"entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/1"}},
+      {"entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/2"}},
+      {"entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/3"}},
+      {"entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/4"}},
+      {"entity": {"type": "uri", "value": "https://register.ld.admin.ch/zefix/company/5"}}
+    ]
+  }
+}
