@@ -1,7 +1,7 @@
 project = "zefix-parser"
 author = "Prospex"
 copyright = "2026 Prospex"
-release = "0.1.0"
+release = "0.1.1"
 
 extensions = [
     "sphinx.ext.autodoc",

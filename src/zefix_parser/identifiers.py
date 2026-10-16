@@ -2,9 +2,9 @@
 
 Every Swiss company carries a UID (Unternehmens-Identifikationsnummer,
 ``CHE-123.456.789``), and Zefix stores it three different ways depending on
-where you read it: LINDAS returns it unpunctuated, the PublicREST API requires
-it punctuated, and free-text sources hide it inside a longer string. These
-helpers convert between the forms and validate the check digit.
+where you read it: LINDAS and the PublicREST API use it unpunctuated, printed
+documents punctuate it, and free-text sources hide it inside a longer string.
+These helpers convert between the forms and validate the check digit.
 """
 
 from __future__ import annotations
@@ -24,7 +24,8 @@ UID_WEIGHTS = (5, 4, 3, 2, 7, 6, 5, 4)
 def normalize_uid(uid: str) -> str:
     """*uid* with punctuation removed and uppercased: ``"CHE123456789"``.
 
-    Use this as an index key, and :func:`is_valid_uid` to decide whether the
+    This is the form LINDAS stores and the PublicREST API expects in its
+    path. Use it as an index key, and :func:`is_valid_uid` to decide whether the
     value is a real UID.
     """
     return _NON_ALPHANUMERIC.sub("", uid or "").upper()
@@ -33,8 +34,9 @@ def normalize_uid(uid: str) -> str:
 def format_uid(uid: str) -> str:
     """*uid* in the punctuated form ``"CHE-123.456.789"``.
 
-    This is the form the PublicREST API expects in its path; the unpunctuated
-    form returns 404. Anything other than nine digits behind a ``CHE`` prefix
+    This is the printed form, as it appears on invoices and in the SOGC. The
+    PublicREST API answers it with an empty list; send :func:`normalize_uid`
+    there instead. Anything other than nine digits behind a ``CHE`` prefix
     comes back normalized and otherwise untouched.
     """
     normalized = normalize_uid(uid)

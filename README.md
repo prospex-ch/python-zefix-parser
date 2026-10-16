@@ -160,8 +160,8 @@ converts between them:
 ```python
 from zefix_parser import clean_uid, format_uid, is_valid_uid, normalize_uid
 
-normalize_uid("CHE-105.215.703")            # "CHE105215703"  (LINDAS form)
-format_uid("CHE105215703")                  # "CHE-105.215.703"  (REST form)
+normalize_uid("CHE-105.215.703")            # "CHE105215703"  (LINDAS and REST form)
+format_uid("CHE105215703")                  # "CHE-105.215.703"  (printed form)
 clean_uid("VAT: CHE-109.807.630 MWST")      # "CHE109807630"
 is_valid_uid("CHE123456789")                # False - the check digit fails
 ```

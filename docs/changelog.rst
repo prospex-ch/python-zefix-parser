@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.1.1 (2026-10-16)
+------------------
+
+* ``ZefixRestClient.get_by_uid`` sends the unpunctuated UID. The PublicREST API
+  now answers the punctuated form with an empty list, so 0.1.0 returned
+  ``None`` for every company. When the unpunctuated form comes back empty, the
+  client asks again with the punctuated one.
+* The docstrings of ``format_uid`` and ``normalize_uid`` name the form the API
+  expects.
+
 0.1.0 (2026-09-04)
 ------------------
 

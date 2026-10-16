@@ -19,7 +19,7 @@ import time
 from collections.abc import Iterator
 from datetime import date, datetime, timezone
 
-from .identifiers import format_uid, normalize_chid
+from .identifiers import format_uid, normalize_chid, normalize_uid
 from .lindas import (
     build_combined_page_query,
     build_count_query,
@@ -162,10 +162,16 @@ class ZefixRestClient(_BaseClient):
     def get_by_uid(self, uid: str) -> Company | None:
         """The company with this UID, or ``None`` if the register has none.
 
-        *uid* is punctuated for you, so ``"CHE123456789"`` and
-        ``"CHE-123.456.789"`` both work; the API only accepts the latter.
+        ``"CHE123456789"`` and ``"CHE-123.456.789"`` both work. The client
+        sends the unpunctuated form, which the API answers today, and asks
+        again with the punctuated form when that comes back empty.
         """
-        data = self._get(f"/company/uid/{format_uid(uid)}")
+        # The API answered only the punctuated form until autumn 2026, so keep
+        # it as a fallback in case it flips back.
+        bare = normalize_uid(uid)
+        data = self._get(f"/company/uid/{bare}")
+        if not data and format_uid(bare) != bare:
+            data = self._get(f"/company/uid/{format_uid(bare)}")
         return parse_company(data) if data else None
 
     def get_by_ehraid(self, ehraid: int) -> Company | None:

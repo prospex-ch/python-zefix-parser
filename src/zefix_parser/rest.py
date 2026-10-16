@@ -15,7 +15,7 @@ from decimal import Decimal, InvalidOperation
 from ._labels import normalize_whitespace
 from .schemas import Company, OldName, ParserError, RelatedEntity, SogcPublication
 
-PARSER_VERSION = "zefix-parser/0.1.0"
+PARSER_VERSION = "zefix-parser/0.1.1"
 
 _PUNCTUATION = re.compile(r"[^\w\s]", re.UNICODE)
 

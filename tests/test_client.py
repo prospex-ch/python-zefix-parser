@@ -48,21 +48,56 @@ def _entity_binding(number):
 
 
 class TestRestClient:
-    def test_get_by_uid_punctuates_the_uid(self, company_full):
-        """The API 404s on an unpunctuated UID, so the client punctuates for you."""
+    def test_get_by_uid_sends_the_unpunctuated_uid(self, company_full):
+        """The API answers the unpunctuated UID, so the client strips punctuation."""
         seen = []
 
         def handler(request):
             seen.append(request.url.path)
-            return httpx.Response(200, json=company_full)
+            return httpx.Response(200, json=[company_full])
+
+        with _rest_client(handler) as client:
+            company = client.get_by_uid("CHE-105.215.703")
+
+        assert seen == ["/ZefixPublicREST/api/v1/company/uid/CHE105215703"]
+        assert company.name == "Alpenblick Handel AG"
+
+    def test_get_by_uid_falls_back_to_the_punctuated_uid(self, company_full):
+        """An empty answer to the unpunctuated UID is retried punctuated."""
+        seen = []
+
+        def handler(request):
+            seen.append(request.url.path)
+            if request.url.path.endswith("/CHE-105.215.703"):
+                return httpx.Response(200, json=[company_full])
+            return httpx.Response(200, json=[])
 
         with _rest_client(handler) as client:
             company = client.get_by_uid("CHE105215703")
 
-        assert seen == ["/ZefixPublicREST/api/v1/company/uid/CHE-105.215.703"]
+        assert seen == [
+            "/ZefixPublicREST/api/v1/company/uid/CHE105215703",
+            "/ZefixPublicREST/api/v1/company/uid/CHE-105.215.703",
+        ]
         assert company.name == "Alpenblick Handel AG"
 
+    def test_malformed_uid_is_asked_once(self):
+        seen = []
+
+        def handler(request):
+            seen.append(request.url.path)
+            return httpx.Response(200, json=[])
+
+        with _rest_client(handler) as client:
+            assert client.get_by_uid("CHE-105.215") is None
+
+        assert seen == ["/ZefixPublicREST/api/v1/company/uid/CHE105215"]
+
     def test_unknown_company_is_none(self):
+        with _rest_client(lambda request: httpx.Response(200, json=[])) as client:
+            assert client.get_by_uid("CHE-105.215.703") is None
+
+    def test_unknown_company_404_is_none(self):
         with _rest_client(lambda request: httpx.Response(404)) as client:
             assert client.get_by_uid("CHE-105.215.703") is None
 

@@ -43,18 +43,19 @@ Endpoints
    * - :meth:`~zefix_parser.client.ZefixRestClient.sogc`
      - ``GET /sogc/{id}``
 
-A lookup that finds nothing returns ``None``. The register answers 404 for a UID
-it has no record of, so treat that as an answer and carry on.
+A lookup that finds nothing returns ``None``. The register answers an empty list
+or a 404 for a UID it has no record of, so treat that as an answer and carry on.
 
-The UID has to be punctuated
-----------------------------
+The UID goes unpunctuated
+-------------------------
 
-``GET /company/uid/CHE105215703`` returns 404;
-``GET /company/uid/CHE-105.215.703`` returns the company. LINDAS stores the
-unpunctuated form, so anything you carry across from a crawl needs converting.
-:meth:`~zefix_parser.client.ZefixRestClient.get_by_uid` calls
-:func:`~zefix_parser.format_uid` for you, and you can call it yourself if you
-are driving the API by hand.
+``GET /company/uid/CHE105215703`` returns the company;
+``GET /company/uid/CHE-105.215.703`` returns an empty list. LINDAS stores the
+same unpunctuated form, so UIDs from a crawl go straight in, and UIDs copied
+from an invoice or the SOGC need :func:`~zefix_parser.normalize_uid` first.
+:meth:`~zefix_parser.client.ZefixRestClient.get_by_uid` normalizes for you and
+asks again with the punctuated form when the first answer is empty, which costs
+a second request for a UID the register does not hold.
 
 Search is a prefix match
 ------------------------
